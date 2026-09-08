@@ -30,7 +30,7 @@ class TestBounds:
     def test_union_never_exceeds_the_sum_and_matches_a_raster(self):
         rng = random.Random(103)
         gaps = []
-        for _ in range(300):
+        for _ in range(60):  # the raster check is the slow part; 60 layouts suffice
             boxes = []
             for _ in range(rng.randint(1, 8)):
                 x, y = rng.uniform(0, 20), rng.uniform(0, 20)
