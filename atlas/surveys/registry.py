@@ -6,7 +6,10 @@ import importlib
 
 from atlas.surveys.survey import Survey
 
-SURVEYS: tuple[str, ...] = ()
+SURVEYS: tuple[str, ...] = (
+    "atlas.surveys.nearcheck",
+    "atlas.surveys.seamwatch",
+)
 
 
 def all_surveys() -> list[Survey]:
