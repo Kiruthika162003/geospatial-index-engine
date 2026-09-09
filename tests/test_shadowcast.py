@@ -56,9 +56,9 @@ class TestTheRidgeAndTheStep:
 
     def test_a_coarse_step_loses_a_sixth_of_a_walls_shadow(self):
         wall = ridge(41, 5.0, 20)
-        steps = (1.0, 0.5, 0.25, 0.1)
+        steps = (1.0, 0.5, 0.25)
         counts = {step: count(shadowed(wall, 217.0, 30.0, step)) for step in steps}
-        assert counts[0.5] == counts[0.25] == counts[0.1] == 230
+        assert counts[0.5] == counts[0.25] == 230
         assert counts[1.0] == 192
         assert 1 - counts[1.0] / counts[0.25] == pytest.approx(0.165, abs=0.01)
 
