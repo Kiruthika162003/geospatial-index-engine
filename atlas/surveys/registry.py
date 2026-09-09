@@ -9,6 +9,8 @@ from atlas.surveys.survey import Survey
 SURVEYS: tuple[str, ...] = (
     "atlas.surveys.nearcheck",
     "atlas.surveys.seamwatch",
+    "atlas.surveys.arcwatch",
+    "atlas.surveys.rulerwalk",
 )
 
 
