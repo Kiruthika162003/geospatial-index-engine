@@ -11,6 +11,8 @@ SURVEYS: tuple[str, ...] = (
     "atlas.surveys.seamwatch",
     "atlas.surveys.arcwatch",
     "atlas.surveys.rulerwalk",
+    "atlas.surveys.tiltwatch",
+    "atlas.surveys.gridturn",
 )
 
 
