@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from atlas.surveys import gridturn, tiltwatch
+from atlas.surveys import gridturn, ringwatch, tiltwatch
 from atlas.surveys.registry import SURVEYS
 
 
@@ -26,8 +26,20 @@ class TestGridturn:
         assert "0.0239" in told.finding
 
 
+class TestRingwatch:
+    def test_the_first_ring_rule_fails_on_a_third_of_queries(self):
+        told = ringwatch.run()
+        assert told.holds
+        assert told.readings["naive_wrong_share"] == 0.311
+        assert told.readings["safe_wrong_share"] == 0.0
+        assert told.readings["safe_rings"] == 1.0
+        assert told.readings["naive_rings"] == 0.034
+        assert "31 percent" in told.finding
+
+
 class TestTheRoster:
-    def test_both_surveys_are_registered(self):
+    def test_the_surveys_are_registered(self):
         assert "atlas.surveys.tiltwatch" in SURVEYS
         assert "atlas.surveys.gridturn" in SURVEYS
-        assert len(SURVEYS) == 6
+        assert "atlas.surveys.ringwatch" in SURVEYS
+        assert len(SURVEYS) == 7
