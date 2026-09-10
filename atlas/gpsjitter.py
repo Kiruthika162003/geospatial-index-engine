@@ -1,26 +1,26 @@
-"""A still GPS receiver walks 1.77 sigma a fix; a moving track inflates by (sigma/step) squared.
+"""A still GPS walks 1.77 sigma a fix; a moving track grows by 1 + (sigma over step) squared.
 
-Position jitter of sigma on each axis makes two fixes of a still
-receiver differ by a distance whose mean is sigma root 2 root(pi
-over 2), 1.7725 sigma: over 2000 fixes the mean step reads 1.762,
-5.286 and 8.810 at sigma 1, 3 and 5, a fraction under the law, and
-a receiver that never moved reports 1.77, 5.3 and 8.8 units a second
-at one-second fixes and a tenth of that at ten-second fixes. A track
-that does move inflates by less as the step outgrows the noise: at
-sigma 3 a track stepping 1, 3, 5, 10, 20 and 50 a fix reads 5.39,
-1.99, 1.40, 1.096, 1.023 and 1.004 times its true length, matching
-a simulation of the step law to three places. The guess that the
-inflation is a tenth at four and a half sigma was wrong: the
-small-noise expansion puts it at 1 + sigma squared over step
-squared, 1.09 at step 10 and 1.0225 at 20 against the 1.096 and
-1.0229 measured, so a tenth falls at root ten sigma, 9.5 for sigma
-3, and the expansion undershoots below that, 1.36 against 1.40 at
-step 5.
+Position jitter of sigma on each axis puts a random step between
+any two fixes. A receiver standing still for 2000 fixes reads a
+mean step of 1.762, 5.286 and 8.810 at sigma 1, 3 and 5, within 0.6
+percent of the law sigma root 2 root(pi over 2), 1.7725 sigma,
+since each axis of the difference has twice the variance; at one
+fix a second that is an apparent speed of 1.77, 5.31 and 8.84 units
+a second, and at one fix every ten seconds a tenth of it. A track
+walked at a step of 1, 3, 5, 10, 20 and 50 units a fix under sigma
+3 reads a length 5.39, 1.99, 1.40, 1.096, 1.023 and 1.004 times its
+own, matching a simulation of the expected step to three places.
+The guess that ten percent of inflation is left by a step of four
+and a half sigma was wrong: for a step well over the noise the
+inflation is 1 + sigma squared over step squared, 1.09, 1.0225 and
+1.0036 at steps 10, 20 and 50, so ten percent is reached at sigma
+over root 0.1, 3.16 sigma, 9.49 units here.
 
-Averaging every fix over a window of five brings the inflation to
-1.41, 1.04, 1.013, 1.003 and 1.0 at steps 1 to 20, and keeping only
-every fifth fix does the same, 1.39, 1.04, 1.014, 1.004 and 1.001,
-since both lengthen the step against a noise that does not grow.
+Averaging every fix with its two neighbours on each side brings the
+inflation to 1.41, 1.039, 1.013, 1.003, 1.000 and 0.999 at the six
+steps, and keeping every fifth fix reads 1.39, 1.037, 1.0135, 1.0035,
+1.001 and 1.0002, since both cut the noise steps five ways; the
+smoothed track shortens a straight track slightly at wide steps.
 """
 
 from __future__ import annotations
@@ -125,6 +125,13 @@ def inflation_law(step: float, sigma: float) -> float:
     return 1 + sigma * sigma / (step * step)
 
 
+def small_noise_law(step: float, sigma: float) -> float:
+    # for a step well over the noise, the inflation is 1 + sigma squared over step squared
+    if step <= 0:
+        raise Invalid("the step must be positive")
+    return 1 + (sigma / step) ** 2
+
+
 def break_even_step(sigma: float) -> float:
-    # the step at which the inflation falls to ten percent under the small-noise law
-    return sigma * math.sqrt(10)
+    # the step at which the inflation of a moving track falls to ten percent
+    return sigma / math.sqrt(0.1)
