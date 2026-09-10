@@ -66,5 +66,3 @@ python -m ruff check atlas tests
 Python 3.11 or later, no third-party dependencies. Tests lock the
 measured numbers; where a number came from a random draw the seed is
 fixed and the tolerance is the one the measurement earned.
-
-Written by Kiruthika Subramani in collaboration with Claude, Anthropic's AI assistant.
