@@ -1,24 +1,25 @@
-"""A gravity exponent's log fit reads 0.44 for a true 1 when 90 percent of pairs are empty.
+"""The log fit of a decay exponent reads 1.32 for a true 2 at a mean flow of 2; Poisson reads 2.
 
-A gravity model sends flows between places in proportion to their
+A gravity model sends flow between places in proportion to their
 sizes over their distance to the power beta, and the exponent is
-fitted from observed counts. On clean flows a log-linear regression
-recovers beta 1.5 and its scale exactly, and so does a Poisson fit
-that searches the exponent minimising the deviance. Counts are not
-clean: they are Poisson, and far or small pairs read zero. The guess
-that the log fit only loses precision on sparse counts was wrong;
-it loses its centre. With a true beta of 1 over 30 towns, totals of
-12, 123, 1268 and 12,612 trips leave 98.7, 89.7, 51.3 and 6.8
-percent of the pairs empty, and the log fit, which must drop them,
-reads -0.06, 0.44, 0.71 and 0.97 on average over ten draws, since
-the pairs it drops are exactly the far ones where the decay shows,
-while the Poisson fit reads 1.23, 1.06, 1.003 and 0.998. With a true
-beta of 2 the emptiness is worse, 77.4 percent at 851 trips, and the
-log fit reads 1.195 against the Poisson fit's 1.995; at 87 trips
-0.69 against 2.01, and at 8 trips the Poisson fit reads 2.33 and at
-a single trip 4.04, where nothing can be fitted. The log fit's
-spread across the ten draws reads 1.02, 0.33, 0.14 and 0.05 at the
-four totals for beta 1.
+fitted from observed counts. Two fits are tried on 25 towns with
+lognormal sizes: a regression of the log of flow over the size
+product on minus the log of distance, dropping the pairs with no
+flow, and a Poisson maximum likelihood over every pair including
+the zeros, found by golden-section search on the deviance. On
+noise-free flows both recover beta 2 and the scale 50 exactly. Under
+Poisson counts the guess that the log fit recovers the exponent
+once counts reach the tens was wrong: for a true exponent of 1 it
+reads 0.23, 0.49, 0.81 and 1.02 at mean flows of 0.03, 0.32, 3.2 and
+31.6 a pair, where 97, 82, 32 and 0.7 percent of the pairs are
+zero, and for a true 2 it reads 0.41, 0.93 and 1.32 at mean flows of
+0.02, 0.21 and 2.1, where 98.5, 92.5 and 68 percent are zero, since
+the far pairs with small expected flow are the ones that fall to
+zero and drop out, which flattens the slope; at a mean flow of 0.004
+it reads -9.5 with a spread of 32 across ten draws. The Poisson fit
+reads 1.17, 1.01, 1.001 and 0.997 for the true 1 and 2.82, 2.05,
+2.02 and 1.996 for the true 2 at the same flows, within 2 percent
+from a mean flow of 0.2 a pair.
 """
 
 from __future__ import annotations
