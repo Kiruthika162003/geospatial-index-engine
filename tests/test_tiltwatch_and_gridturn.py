@@ -42,4 +42,4 @@ class TestTheRoster:
         assert "atlas.surveys.tiltwatch" in SURVEYS
         assert "atlas.surveys.gridturn" in SURVEYS
         assert "atlas.surveys.ringwatch" in SURVEYS
-        assert len(SURVEYS) == 7
+        assert len(SURVEYS) == 10
